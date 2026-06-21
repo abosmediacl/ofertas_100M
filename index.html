@@ -774,7 +774,15 @@
         </button>
         <button class="btn" onclick="exportar()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Exportar como HTML
+          Exportar HTML
+        </button>
+        <button class="btn" onclick="exportarJSON()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Guardar datos (.json)
+        </button>
+        <button class="btn" onclick="importarJSON()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Cargar datos (.json)
         </button>
       </div>
     </div>
@@ -937,6 +945,43 @@ function exportar() {
   showToast('Exportado correctamente');
 }
 
+function exportarJSON() {
+  autosave();
+  const blob = new Blob([JSON.stringify(D, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `oferta-abos-media-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  showToast('Datos exportados como JSON');
+}
+
+function importarJSON() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        D = JSON.parse(ev.target.result);
+        localStorage.setItem('am_offer', JSON.stringify(D));
+        document.getElementById('ext-list').innerHTML = '';
+        document.getElementById('int-list').innerHTML = '';
+        document.getElementById('fil-list').innerHTML = '';
+        document.getElementById('stack-list').innerHTML = '';
+        FIELDS.forEach(id => { const el = document.getElementById(id); if(el && D[id] !== undefined) el.value = D[id]; });
+        if(D.probs) ['ext','int','fil'].forEach(t => { if(D.probs[t]) D.probs[t].forEach(p => addProb(t, p.p, p.s)); });
+        if(D.stack) D.stack.forEach(s => addStack(s.n, s.t, s.v));
+        updateEq(); calcStack();
+        showToast('Datos importados correctamente');
+      } catch(err) { showToast('Error: archivo JSON inválido'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   document.getElementById('toast-msg').textContent = msg;
@@ -946,11 +991,66 @@ function showToast(msg) {
 
 function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
+const SUPABASE_URL = 'https://rnmttmbqwzyjrvvywhi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_MYIWaT7zaQ47E7lF8Qtl3g_1XhdFegu';
+const OFFER_ID = 1;
+
+async function supabaseGuardar() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}`, {
+      method: 'GET',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const rows = await res.json();
+    const method = rows.length > 0 ? 'PATCH' : 'POST';
+    const url = rows.length > 0
+      ? `${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}`
+      : `${SUPABASE_URL}/rest/v1/ofertas`;
+    await fetch(url, {
+      method,
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(rows.length > 0 ? { datos: D } : { id: OFFER_ID, datos: D })
+    });
+    showToast('Guardado en la nube ☁');
+  } catch(e) { showToast('Error al guardar en nube'); }
+}
+
+async function supabaseCargar() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}&select=datos`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const rows = await res.json();
+    if(rows.length > 0 && rows[0].datos) {
+      D = rows[0].datos;
+      localStorage.setItem('am_offer', JSON.stringify(D));
+      document.getElementById('ext-list').innerHTML = '';
+      document.getElementById('int-list').innerHTML = '';
+      document.getElementById('fil-list').innerHTML = '';
+      document.getElementById('stack-list').innerHTML = '';
+      FIELDS.forEach(id => { const el = document.getElementById(id); if(el && D[id] !== undefined) el.value = D[id]; });
+      if(D.probs) ['ext','int','fil'].forEach(t => { if(D.probs[t]) D.probs[t].forEach(p => addProb(t, p.p, p.s)); });
+      if(D.stack) D.stack.forEach(s => addStack(s.n, s.t, s.v));
+      updateEq(); calcStack();
+      showToast('Datos cargados desde la nube ☁');
+    } else { showToast('No hay datos en la nube aún'); }
+  } catch(e) { showToast('Error al cargar desde nube'); }
+}
+
 let saveTimer;
 const origAutosave = autosave;
-window.autosave = function() { origAutosave(); clearTimeout(saveTimer); saveTimer = setTimeout(() => showToast('Guardado automáticamente'), 1200); }
+window.autosave = function() {
+  origAutosave();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { supabaseGuardar(); }, 2000);
+}
 
-window.addEventListener('load', () => { load(); updateEq(); calcStack(); });
+window.addEventListener('load', () => { load(); updateEq(); calcStack(); supabaseCargar(); });
 </script>
 </body>
 </html>
