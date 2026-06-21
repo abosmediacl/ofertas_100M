@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OFERTAS 100M — Abos Media</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --bg4: #222230;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f8;
+    --text2: #9090a8;
+    --text3: #5a5a72;
+    --accent: #7c6ff7;
+    --accent2: #5a4fd4;
+    --accent-glow: rgba(124,111,247,0.18);
+    --green: #34d399;
+    --green-bg: rgba(52,211,153,0.1);
+    --red: #f87171;
+    --red-bg: rgba(248,113,113,0.1);
+    --amber: #fbbf24;
+    --amber-bg: rgba(251,191,36,0.1);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96,165,250,0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  [data-theme="light"] {
+    --bg: #f4f4f8;
+    --bg2: #ffffff;
+    --bg3: #ededf5;
+    --bg4: #e4e4ef;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #0f0f1a;
+    --text2: #5a5a78;
+    --text3: #9898b0;
+    --accent: #5a4fd4;
+    --accent2: #4338ca;
+    --accent-glow: rgba(90,79,212,0.12);
+    --shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .logo-text { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
+  .logo-sub { font-size: 11px; color: var(--text3); font-weight: 400; margin-left: 2px; }
+
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .theme-toggle {
+    width: 52px; height: 28px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    display: flex; align-items: center; padding: 3px;
+  }
+  .theme-toggle::after {
+    content: '';
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    transition: transform 0.3s;
+    transform: translateX(0);
+  }
+  [data-theme="light"] .theme-toggle::after { transform: translateX(24px); }
+  .theme-icon { position: absolute; font-size: 11px; top: 50%; transform: translateY(-50%); }
+  .theme-icon.moon { left: 6px; }
+  .theme-icon.sun { right: 6px; }
+
+  .badge-header {
+    font-size: 11px; padding: 4px 10px;
+    background: var(--accent-glow);
+    color: var(--accent);
+    border: 1px solid rgba(124,111,247,0.3);
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: calc(100vh - 60px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px; min-width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+    position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto;
+  }
+  .sidebar-section { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; color: var(--text3); text-transform: uppercase; padding: 8px 12px 4px; margin-top: 8px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text2);
+    transition: all 0.15s;
+    border: 1px solid transparent;
+    user-select: none;
+  }
+  .sidebar-item:hover { background: var(--bg3); color: var(--text); }
+  .sidebar-item.active {
+    background: var(--accent-glow);
+    color: var(--accent);
+    border-color: rgba(124,111,247,0.25);
+    font-weight: 500;
+  }
+  .sidebar-item svg { width: 16px; height: 16px; stroke-width: 1.7; flex-shrink: 0; }
+  .step-num {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--bg4); font-size: 10px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text3); flex-shrink: 0; transition: all 0.15s;
+  }
+  .sidebar-item.active .step-num { background: var(--accent); color: #fff; }
+  .sidebar-item.done .step-num { background: var(--green); color: #fff; }
+  .sidebar-item.done { color: var(--text2); }
+
+  /* MAIN */
+  .main { flex: 1; padding: 32px; max-width: 820px; }
+
+  .section-header { margin-bottom: 28px; }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .section-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .section-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card-title svg { width: 15px; height: 15px; }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 12px; font-weight: 500; color: var(--text3); letter-spacing: 0.3px; }
+  input[type=text], textarea, select {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--text);
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    width: 100%;
+  }
+  input[type=text]:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+  select option { background: var(--bg3); }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 16px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 500; font-family: inherit;
+    cursor: pointer; transition: all 0.15s; border: 1px solid var(--border2);
+    background: var(--bg3); color: var(--text);
+  }
+  .btn:hover { background: var(--bg4); border-color: var(--border2); }
+  .btn svg { width: 14px; height: 14px; }
+  .btn-accent {
+    background: var(--accent); color: #fff; border-color: transparent;
+    box-shadow: 0 2px 12px var(--accent-glow);
+  }
+  .btn-accent:hover { background: var(--accent2); }
+  .btn-danger { color: var(--red); border-color: rgba(248,113,113,0.2); background: var(--red-bg); }
+  .btn-danger:hover { background: rgba(248,113,113,0.2); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-ghost { background: transparent; border-color: transparent; color: var(--text2); }
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
+
+  /* PROBLEMS TABLE */
+  .prob-header { display: grid; grid-template-columns: 1fr 1fr 36px; gap: 8px; margin-bottom: 8px; }
+  .prob-header span { font-size: 11px; font-weight: 600; color: var(--text3); letter-spacing: 0.4px; text-transform: uppercase; padding: 0 4px; }
+  .prob-row { display: grid; grid-template-columns: 1fr 1fr 36px; gap: 8px; margin-bottom: 8px; align-items: start; }
+  .type-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 20px; letter-spacing: 0.3px; margin-bottom: 12px;
+  }
+  .badge-ext { background: var(--blue-bg); color: var(--blue); }
+  .badge-int { background: var(--amber-bg); color: var(--amber); }
+  .badge-fil { background: rgba(167,139,250,0.12); color: #a78bfa; }
+
+  /* SLIDERS */
+  .dim-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .dim-block:hover { border-color: var(--border2); }
+  .dim-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .dim-name { font-size: 14px; font-weight: 600; }
+  .dim-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+  .dim-up { background: var(--green-bg); color: var(--green); }
+  .dim-down { background: var(--red-bg); color: var(--red); }
+  .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .slider-label { font-size: 12px; color: var(--text3); min-width: 36px; text-align: right; }
+  input[type=range] {
+    flex: 1; height: 4px; -webkit-appearance: none;
+    background: var(--bg4); border-radius: 2px; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow); cursor: pointer;
+    transition: box-shadow 0.15s;
+  }
+  input[type=range]:hover::-webkit-slider-thumb { box-shadow: 0 0 0 6px var(--accent-glow); }
+  .slider-val { font-size: 16px; font-weight: 700; min-width: 24px; text-align: center; color: var(--accent); }
+
+  /* EQ DISPLAY */
+  .eq-bar {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px; margin-bottom: 20px;
+  }
+  .eq-cell {
+    text-align: center; min-width: 70px;
+    background: var(--bg4); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 12px;
+  }
+  .eq-cell .n { font-size: 22px; font-weight: 700; line-height: 1; }
+  .eq-cell .l { font-size: 10px; color: var(--text3); margin-top: 2px; letter-spacing: 0.3px; }
+  .eq-op { font-size: 20px; color: var(--text3); font-weight: 300; }
+  .eq-result { min-width: 80px; background: var(--accent-glow); border-color: rgba(124,111,247,0.3); }
+  .eq-result .n { color: var(--accent); }
+  .progress-wrap { margin-top: 6px; }
+  .progress-track { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; margin-top: 6px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 2px; transition: width 0.4s; }
+
+  /* STACK */
+  .stack-header { display: grid; grid-template-columns: 1fr 100px 100px 36px; gap: 8px; margin-bottom: 8px; }
+  .stack-header span { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; padding: 0 4px; }
+  .stack-row { display: grid; grid-template-columns: 1fr 100px 100px 36px; gap: 8px; margin-bottom: 8px; align-items: center; }
+  .stack-type-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+  .tag-core { background: var(--blue-bg); color: var(--blue); }
+  .tag-bono { background: var(--green-bg); color: var(--green); }
+  .tag-urgencia { background: var(--amber-bg); color: var(--amber); }
+
+  /* RESUMEN */
+  .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .res-metric {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px;
+  }
+  .res-metric .rm-label { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .res-metric .rm-val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  .res-offer-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .res-line { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .res-line:last-child { border-bottom: none; }
+  .res-line svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+  .res-key { font-size: 12px; font-weight: 600; color: var(--text3); min-width: 100px; }
+  .res-body { font-size: 14px; color: var(--text); flex: 1; line-height: 1.5; }
+
+  /* SECTION VISIBILITY */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* ACTIONS ROW */
+  .actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 720px) {
+    .sidebar { display: none; }
+    .main { padding: 20px 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .res-grid { grid-template-columns: 1fr; }
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); padding: 10px 16px;
+    font-size: 13px; color: var(--text);
+    box-shadow: var(--shadow); z-index: 999;
+    display: flex; align-items: center; gap: 8px;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast svg { width: 16px; height: 16px; color: var(--green); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">AM</div>
+    <div>
+      <div class="logo-text">OFERTAS 100M <span class="logo-sub">· Abos Media</span></div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="badge-header">Metodología Hormozi</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
+      <span class="theme-icon moon">🌙</span>
+      <span class="theme-icon sun">☀️</span>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">Construcción</div>
+    <div class="sidebar-item active" onclick="goto('avatar', this)">
+      <span class="step-num" id="sn-1">1</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Avatar
+    </div>
+    <div class="sidebar-item" onclick="goto('problemas', this)">
+      <span class="step-num" id="sn-2">2</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Problemas
+    </div>
+    <div class="sidebar-item" onclick="goto('ecuacion', this)">
+      <span class="step-num" id="sn-3">3</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      Ecuación del valor
+    </div>
+    <div class="sidebar-item" onclick="goto('oferta', this)">
+      <span class="step-num" id="sn-4">4</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+      Oferta
+    </div>
+    <div class="sidebar-section">Vista</div>
+    <div class="sidebar-item" onclick="goto('resumen', this)">
+      <span class="step-num" id="sn-5">★</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Resumen final
+    </div>
+    <div style="flex:1"></div>
+    <div style="padding: 12px; border-top: 1px solid var(--border); margin-top: 12px;">
+      <div style="font-size: 11px; color: var(--text3); margin-bottom: 6px; text-align: center;">Índice de valor</div>
+      <div style="font-size: 28px; font-weight: 700; text-align: center; color: var(--accent)" id="sidebar-idx">—</div>
+      <div class="progress-track" style="margin-top: 8px;"><div class="progress-fill" id="sidebar-prog" style="width: 0%"></div></div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- AVATAR -->
+    <div id="page-avatar" class="page active">
+      <div class="section-header">
+        <div class="section-tag">Paso 1</div>
+        <div class="section-title">Identificación del avatar</div>
+        <div class="section-desc">Define con precisión a quién le vendes. Cuanto más específico, más poderosa será tu oferta.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Perfil demográfico
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre del avatar</label>
+            <input type="text" id="av-nombre" placeholder="ej. Emprendedor frustrado" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>Edad / rango</label>
+            <input type="text" id="av-edad" placeholder="ej. 30–45 años" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>Ocupación</label>
+            <input type="text" id="av-ocup" placeholder="ej. Dueño de negocio local" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>Ingresos aproximados</label>
+            <input type="text" id="av-ingresos" placeholder="ej. $3,000–$8,000 / mes" oninput="autosave()">
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Psicografía
+        </div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Situación actual — el "antes"</label>
+            <textarea id="av-antes" placeholder="¿Cómo se siente hoy? ¿Qué está viviendo? ¿Qué no está funcionando?" oninput="autosave()"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Resultado soñado — el "después"</label>
+            <textarea id="av-despues" placeholder="¿Qué quiere lograr? ¿Cómo quiere verse, sentirse, vivir?" oninput="autosave()"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Miedos más profundos</label>
+            <textarea id="av-miedos" placeholder="ej. Que su negocio fracase, no ser suficiente..." oninput="autosave()"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Frustraciones diarias</label>
+            <textarea id="av-frustr" placeholder="ej. No tiene tiempo, no sabe qué hacer primero..." oninput="autosave()"></textarea>
+          </div>
+          <div class="form-group">
+            <label>¿Qué ya ha intentado? (soluciones fallidas)</label>
+            <textarea id="av-intentos" placeholder="ej. Cursos online, contratar freelancers, publicidad..." oninput="autosave()"></textarea>
+          </div>
+          <div class="form-group">
+            <label>¿Qué le impide actuar? (objeciones)</label>
+            <textarea id="av-objeciones" placeholder="ej. No tengo dinero, no tengo tiempo, no confío..." oninput="autosave()"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-accent" onclick="goto('problemas', null)">
+          Continuar
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- PROBLEMAS -->
+    <div id="page-problemas" class="page">
+      <div class="section-header">
+        <div class="section-tag">Paso 2</div>
+        <div class="section-title">Tabla problemas → soluciones</div>
+        <div class="section-desc">Mapea cada problema de tu avatar a una solución concreta. Cada problema es una razón para comprar.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="type-badge badge-ext">Externos</span></div>
+        <div class="prob-header">
+          <span>Problema externo</span><span>Solución específica</span><span></span>
+        </div>
+        <div id="ext-list"></div>
+        <button class="btn btn-sm" onclick="addProb('ext')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="type-badge badge-int">Internos</span></div>
+        <div class="prob-header">
+          <span>Problema interno (emocional)</span><span>Solución emocional</span><span></span>
+        </div>
+        <div id="int-list"></div>
+        <button class="btn btn-sm" onclick="addProb('int')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="type-badge badge-fil">Filosóficos</span></div>
+        <div class="prob-header">
+          <span>Problema filosófico (injusticia)</span><span>Solución / posicionamiento</span><span></span>
+        </div>
+        <div id="fil-list"></div>
+        <button class="btn btn-sm" onclick="addProb('fil')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar
+        </button>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="goto('avatar', null)">← Atrás</button>
+        <button class="btn btn-accent" onclick="goto('ecuacion', null)">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ECUACION -->
+    <div id="page-ecuacion" class="page">
+      <div class="section-header">
+        <div class="section-tag">Paso 3</div>
+        <div class="section-title">Ecuación del valor</div>
+        <div class="section-desc">
+          <strong>Valor = (Resultado soñado × Probabilidad percibida) ÷ (Tiempo × Esfuerzo)</strong><br>
+          Maximiza las dos primeras dimensiones. Minimiza las dos últimas.
+        </div>
+      </div>
+
+      <div class="eq-bar">
+        <div class="eq-cell"><div class="n" id="eq1">5</div><div class="l">Resultado</div></div>
+        <div class="eq-op">×</div>
+        <div class="eq-cell"><div class="n" id="eq2">5</div><div class="l">Probabilidad</div></div>
+        <div class="eq-op">÷</div>
+        <div class="eq-cell"><div class="n" id="eq3">5</div><div class="l">Tiempo</div></div>
+        <div class="eq-op">÷</div>
+        <div class="eq-cell"><div class="n" id="eq4">5</div><div class="l">Esfuerzo</div></div>
+        <div class="eq-op">=</div>
+        <div class="eq-cell eq-result"><div class="n" id="eq-idx">1.0</div><div class="l">Índice</div></div>
+        <div class="progress-wrap" style="flex:1; min-width:120px;">
+          <div style="font-size:11px;color:var(--text3);">Fortaleza de la oferta</div>
+          <div class="progress-track"><div class="progress-fill" id="eq-prog" style="width:10%"></div></div>
+        </div>
+      </div>
+
+      <div class="dim-block">
+        <div class="dim-top">
+          <div class="dim-name">Resultado soñado</div>
+          <span class="dim-badge dim-up">↑ Maximizar</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Hoy:</span>
+          <input type="range" min="1" max="10" step="1" id="d1" value="5" oninput="updateEq()">
+          <span class="slider-val" id="d1v">5</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>¿Qué resultado específico prometes?</label>
+            <input type="text" id="d1-res" placeholder="ej. 3 clientes nuevos en 30 días" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>¿Cómo puedes hacerlo más grande y concreto?</label>
+            <textarea id="d1-mejor" placeholder="Ideas para mejorar este aspecto..." oninput="autosave()" style="min-height:50px"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="dim-block">
+        <div class="dim-top">
+          <div class="dim-name">Probabilidad percibida de éxito</div>
+          <span class="dim-badge dim-up">↑ Maximizar</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Hoy:</span>
+          <input type="range" min="1" max="10" step="1" id="d2" value="5" oninput="updateEq()">
+          <span class="slider-val" id="d2v">5</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>¿Qué pruebas sociales y garantías tienes?</label>
+            <input type="text" id="d2-res" placeholder="ej. 47 casos de éxito, garantía de resultado" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>¿Cómo puedes aumentar la certeza del cliente?</label>
+            <textarea id="d2-mejor" placeholder="Ideas para mejorar este aspecto..." oninput="autosave()" style="min-height:50px"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="dim-block">
+        <div class="dim-top">
+          <div class="dim-name">Tiempo hasta el resultado</div>
+          <span class="dim-badge dim-down">↓ Minimizar</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Velocidad:</span>
+          <input type="range" min="1" max="10" step="1" id="d3" value="5" oninput="updateEq()">
+          <span class="slider-val" id="d3v">5</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>¿Cuándo ve el cliente sus primeros resultados?</label>
+            <input type="text" id="d3-res" placeholder="ej. Primeras ganancias rápidas en 7 días" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>¿Cómo puedes crear ganancias rápidas más rápido?</label>
+            <textarea id="d3-mejor" placeholder="Ideas para mejorar este aspecto..." oninput="autosave()" style="min-height:50px"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="dim-block">
+        <div class="dim-top">
+          <div class="dim-name">Esfuerzo y sacrificio</div>
+          <span class="dim-badge dim-down">↓ Minimizar</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Facilidad:</span>
+          <input type="range" min="1" max="10" step="1" id="d4" value="5" oninput="updateEq()">
+          <span class="slider-val" id="d4v">5</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>¿Qué esfuerzo le pides al cliente?</label>
+            <input type="text" id="d4-res" placeholder="ej. Solo 1 hora/semana de reunión" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>¿Cómo puedes hacerlo más "hecho para ti"?</label>
+            <textarea id="d4-mejor" placeholder="Ideas para mejorar este aspecto..." oninput="autosave()" style="min-height:50px"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="goto('problemas', null)">← Atrás</button>
+        <button class="btn btn-accent" onclick="goto('oferta', null)">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- OFERTA -->
+    <div id="page-oferta" class="page">
+      <div class="section-header">
+        <div class="section-tag">Paso 4</div>
+        <div class="section-title">Constructor de oferta</div>
+        <div class="section-desc">Empaqueta todo en una oferta irresistible. Stack de valor, garantía y escasez.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+          Datos principales
+        </div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Nombre de la oferta</label>
+            <input type="text" id="of-nombre" placeholder="ej. Sistema de Captación Express para PYMES" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>Precio de inversión</label>
+            <input type="text" id="of-precio" placeholder="ej. $2,500 pago único" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>Promesa principal (1 línea)</label>
+            <input type="text" id="of-promesa" placeholder="ej. 3 clientes en 30 días o devolvemos el dinero" oninput="autosave()">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Stack de valor y bonos
+        </div>
+        <div class="stack-header">
+          <span>Entregable / componente</span><span>Tipo</span><span>Valor percibido</span><span></span>
+        </div>
+        <div id="stack-list"></div>
+        <div class="actions" style="margin-top:8px">
+          <button class="btn btn-sm" onclick="addStack()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar entregable
+          </button>
+        </div>
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;color:var(--text2)">Valor total percibido del stack</span>
+          <span style="font-size:20px;font-weight:700;color:var(--green)" id="stack-total">$0</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Garantía
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Tipo de garantía</label>
+            <select id="of-gtipo" onchange="autosave()">
+              <option value="">Sin garantía por ahora</option>
+              <option value="devolucion">Devolución de dinero</option>
+              <option value="resultado">Garantía de resultado</option>
+              <option value="condicional">Garantía condicional</option>
+              <option value="doble">Doble garantía</option>
+              <option value="personalizada">Personalizada</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Plazo de la garantía</label>
+            <input type="text" id="of-gplazo" placeholder="ej. 30 días, 90 días..." oninput="autosave()">
+          </div>
+          <div class="form-group full">
+            <label>Descripción completa de la garantía</label>
+            <textarea id="of-garantia" placeholder="ej. Si no consigues al menos 3 clientes nuevos en los primeros 30 días, trabajamos contigo de forma gratuita hasta lograrlo — o te devolvemos el 100% sin preguntas." oninput="autosave()"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Escasez y urgencia
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Escasez (limitación real)</label>
+            <input type="text" id="of-escasez" placeholder="ej. Solo acepto 5 clientes por mes" oninput="autosave()">
+          </div>
+          <div class="form-group">
+            <label>Urgencia (límite de tiempo)</label>
+            <input type="text" id="of-urgencia" placeholder="ej. Precio especial válido hasta el viernes" oninput="autosave()">
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="goto('ecuacion', null)">← Atrás</button>
+        <button class="btn btn-accent" onclick="goto('resumen', null)">Ver resumen final <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div id="page-resumen" class="page">
+      <div class="section-header">
+        <div class="section-tag">Resumen</div>
+        <div class="section-title">Tu oferta irresistible</div>
+        <div class="section-desc">Vista completa de la oferta construida con la metodología 100M de Alex Hormozi.</div>
+      </div>
+
+      <div class="res-grid" id="res-metrics"></div>
+      <div class="res-offer-card" id="res-body">
+        <div style="color:var(--text3);font-size:13px">Completa los pasos anteriores para ver tu oferta aquí.</div>
+      </div>
+
+      <div class="actions" style="margin-top:20px">
+        <button class="btn btn-accent" onclick="buildResumen()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.35"/></svg>
+          Actualizar resumen
+        </button>
+        <button class="btn" onclick="exportar()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar como HTML
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toast-msg">Guardado</span>
+</div>
+
+<script>
+let D = {};
+const FIELDS = ['av-nombre','av-edad','av-ocup','av-ingresos','av-antes','av-despues','av-miedos','av-frustr','av-intentos','av-objeciones','d1-res','d1-mejor','d2-res','d2-mejor','d3-res','d3-mejor','d4-res','d4-mejor','of-nombre','of-precio','of-promesa','of-gtipo','of-gplazo','of-garantia','of-escasez','of-urgencia','d1','d2','d3','d4'];
+
+function toggleTheme() {
+  const html = document.documentElement;
+  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  localStorage.setItem('theme', html.getAttribute('data-theme'));
+}
+
+function goto(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else {
+    const map = {avatar:0,problemas:1,ecuacion:2,oferta:3,resumen:4};
+    document.querySelectorAll('.sidebar-item')[map[page]]?.classList.add('active');
+  }
+  if (page === 'resumen') buildResumen();
+  window.scrollTo(0, 0);
+}
+
+function g(id) { return (document.getElementById(id)||{}).value || ''; }
+
+function autosave() {
+  FIELDS.forEach(id => { const el = document.getElementById(id); if(el) D[id] = el.value; });
+  D.probs = {};
+  ['ext','int','fil'].forEach(t => {
+    D.probs[t] = [];
+    document.querySelectorAll(`.prob-${t}`).forEach(r => {
+      D.probs[t].push({ p: r.querySelector('.pi').value, s: r.querySelector('.si').value });
+    });
+  });
+  D.stack = [];
+  document.querySelectorAll('.stack-row-item').forEach(r => {
+    D.stack.push({ n: r.querySelector('.sn').value, t: r.querySelector('.st').value, v: r.querySelector('.sv').value });
+  });
+  localStorage.setItem('am_offer', JSON.stringify(D));
+}
+
+function load() {
+  const t = localStorage.getItem('theme');
+  if(t) document.documentElement.setAttribute('data-theme', t);
+  const saved = localStorage.getItem('am_offer');
+  if(!saved) return;
+  D = JSON.parse(saved);
+  FIELDS.forEach(id => { const el = document.getElementById(id); if(el && D[id] !== undefined) el.value = D[id]; });
+  if(D.probs) ['ext','int','fil'].forEach(t => { if(D.probs[t]) D.probs[t].forEach(p => addProb(t, p.p, p.s)); });
+  if(D.stack) D.stack.forEach(s => addStack(s.n, s.t, s.v));
+  updateEq();
+}
+
+function addProb(type, p='', s='') {
+  const list = document.getElementById(type + '-list');
+  const d = document.createElement('div');
+  d.className = `prob-row prob-${type}`;
+  d.innerHTML = `<input type="text" class="pi" placeholder="Problema..." value="${esc(p)}" oninput="autosave()"><input type="text" class="si" placeholder="Solución..." value="${esc(s)}" oninput="autosave()"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove();autosave();calcStack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6m4-6v6"/></svg></button>`;
+  list.appendChild(d);
+}
+
+function addStack(n='', t='core', v='') {
+  const list = document.getElementById('stack-list');
+  const d = document.createElement('div');
+  d.className = 'stack-row stack-row-item';
+  d.innerHTML = `<input type="text" class="sn" placeholder="Nombre del entregable..." value="${esc(n)}" oninput="autosave();calcStack()"><select class="st" onchange="autosave();calcStack()"><option value="core" ${t==='core'?'selected':''}>Core</option><option value="bono" ${t==='bono'?'selected':''}>Bono</option><option value="urgencia" ${t==='urgencia'?'selected':''}>Urgencia</option></select><input type="text" class="sv" placeholder="$0" value="${esc(v)}" oninput="autosave();calcStack()"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove();autosave();calcStack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>`;
+  list.appendChild(d);
+  calcStack();
+}
+
+function calcStack() {
+  let total = 0;
+  document.querySelectorAll('.stack-row-item').forEach(r => {
+    const v = r.querySelector('.sv').value.replace(/[^0-9.]/g,'');
+    total += parseFloat(v) || 0;
+  });
+  document.getElementById('stack-total').textContent = '$' + total.toLocaleString('es');
+}
+
+function updateEq() {
+  const v = id => parseInt(document.getElementById(id).value) || 5;
+  const d1=v('d1'), d2=v('d2'), d3=v('d3'), d4=v('d4');
+  document.getElementById('d1v').textContent = d1;
+  document.getElementById('d2v').textContent = d2;
+  document.getElementById('d3v').textContent = d3;
+  document.getElementById('d4v').textContent = d4;
+  document.getElementById('eq1').textContent = d1;
+  document.getElementById('eq2').textContent = d2;
+  document.getElementById('eq3').textContent = d3;
+  document.getElementById('eq4').textContent = d4;
+  const idx = (d1 * d2) / (d3 * d4) * 10;
+  document.getElementById('eq-idx').textContent = idx.toFixed(1);
+  const pct = Math.min(idx * 10, 100).toFixed(0);
+  document.getElementById('eq-prog').style.width = pct + '%';
+  document.getElementById('sidebar-idx').textContent = idx.toFixed(1);
+  document.getElementById('sidebar-prog').style.width = pct + '%';
+  autosave();
+}
+
+function buildResumen() {
+  const d1=parseInt(g('d1'))||5, d2=parseInt(g('d2'))||5, d3=parseInt(g('d3'))||5, d4=parseInt(g('d4'))||5;
+  const idx = (d1*d2)/(d3*d4)*10;
+  let total = 0;
+  document.querySelectorAll('.stack-row-item').forEach(r => { total += parseFloat(r.querySelector('.sv').value.replace(/[^0-9.]/g,''))||0; });
+
+  document.getElementById('res-metrics').innerHTML = `
+    <div class="res-metric"><div class="rm-label">Índice de valor</div><div class="rm-val" style="color:var(--accent)">${idx.toFixed(2)}</div><div class="progress-track" style="margin-top:8px"><div class="progress-fill" style="width:${Math.min(idx*10,100).toFixed(0)}%"></div></div></div>
+    <div class="res-metric"><div class="rm-label">Valor stack total</div><div class="rm-val" style="color:var(--green)">$${total.toLocaleString('es')}</div></div>
+    <div class="res-metric"><div class="rm-label">Precio oferta</div><div class="rm-val">${g('of-precio')||'—'}</div></div>
+    <div class="res-metric"><div class="rm-label">Avatar objetivo</div><div class="rm-val" style="font-size:16px">${g('av-nombre')||'—'}</div></div>
+  `;
+
+  let html = '';
+  const line = (icon, key, val) => val ? `<div class="res-line">${icon}<div><span class="res-key">${key}</span><span class="res-body">${val}</span></div></div>` : '';
+  const ico = (path) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="color:var(--accent)">${path}</svg>`;
+
+  html += line(ico('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'), 'Avatar', [g('av-nombre'), g('av-edad'), g('av-ocup')].filter(Boolean).join(' · '));
+  html += line(ico('<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>'), 'Oferta', g('of-nombre'));
+  html += line(ico('<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'), 'Promesa', g('of-promesa'));
+  html += line(ico('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'), 'Antes', g('av-antes'));
+  html += line(ico('<path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/>'), 'Después', g('av-despues'));
+
+  let stackLines = '';
+  document.querySelectorAll('.stack-row-item').forEach(r => {
+    const n = r.querySelector('.sn').value;
+    const t = r.querySelector('.st').value;
+    const v = r.querySelector('.sv').value;
+    if(n) stackLines += `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)"><span class="stack-type-tag tag-${t}">${t}</span><span style="flex:1;font-size:14px">${n}</span>${v?`<span style="font-size:13px;font-weight:600;color:var(--green)">${v}</span>`:''}</div>`;
+  });
+  if(stackLines) html += `<div class="res-line">${ico('<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>')}<div style="flex:1"><span class="res-key">Stack de valor</span><div style="margin-top:4px">${stackLines}</div></div></div>`;
+
+  html += line(ico('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'), 'Garantía', [g('of-garantia'), g('of-gplazo')].filter(Boolean).join(' — '));
+  html += line(ico('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'), 'Escasez / urgencia', [g('of-escasez'), g('of-urgencia')].filter(Boolean).join(' · '));
+
+  document.getElementById('res-body').innerHTML = html || '<div style="color:var(--text3);font-size:13px">Completa los pasos anteriores para ver tu oferta aquí.</div>';
+}
+
+function exportar() {
+  buildResumen();
+  const cont = document.getElementById('res-body').innerHTML;
+  const metrics = document.getElementById('res-metrics').innerHTML;
+  const theme = document.documentElement.getAttribute('data-theme');
+  const blob = new Blob([`<!DOCTYPE html><html data-theme="${theme}"><head><meta charset="UTF-8"><title>Oferta — ${g('of-nombre')||'Abos Media'}</title><style>*{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#222230;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f0f8;--text2:#9090a8;--text3:#5a5a72;--accent:#7c6ff7;--green:#34d399;--green-bg:rgba(52,211,153,0.1);--red:#f87171;--blue:#60a5fa;--blue-bg:rgba(96,165,250,0.1);--amber:#fbbf24;--amber-bg:rgba(251,191,36,0.1);--radius:12px}[data-theme="light"]{--bg:#f4f4f8;--bg2:#ffffff;--bg3:#ededf5;--bg4:#e4e4ef;--border:rgba(0,0,0,0.08);--text:#0f0f1a;--text2:#5a5a78;--text3:#9898b0;--accent:#5a4fd4}body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:32px;max-width:700px;margin:0 auto}.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}.res-metric{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px}.rm-label{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}.rm-val{font-size:22px;font-weight:700}.res-offer-card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:24px}.res-line{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}.res-line:last-child{border-bottom:none}.res-key{font-size:12px;font-weight:600;color:var(--text3);min-width:100px}.res-body{font-size:14px;flex:1;line-height:1.5}.stack-type-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}.tag-core{background:var(--blue-bg);color:var(--blue)}.tag-bono{background:var(--green-bg);color:var(--green)}.tag-urgencia{background:var(--amber-bg);color:var(--amber)}.progress-track{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:6px}.progress-fill{height:100%;background:linear-gradient(90deg,#7c6ff7,#34d399);border-radius:2px}h1{font-size:24px;font-weight:700;margin-bottom:6px}p{color:var(--text3);font-size:13px;margin-bottom:20px}</style></head><body><h1>OFERTAS 100M — Abos Media</h1><p>Generado el ${new Date().toLocaleDateString('es')}</p><div class="res-grid">${metrics}</div><div class="res-offer-card">${cont}</div></body></html>`], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `oferta-abos-media-${Date.now()}.html`;
+  a.click();
+  showToast('Exportado correctamente');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+let saveTimer;
+const origAutosave = autosave;
+window.autosave = function() { origAutosave(); clearTimeout(saveTimer); saveTimer = setTimeout(() => showToast('Guardado automáticamente'), 1200); }
+
+window.addEventListener('load', () => { load(); updateEq(); calcStack(); });
+</script>
+</body>
+</html>
