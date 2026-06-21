@@ -1112,7 +1112,7 @@ const origAutosave = autosave;
 window.autosave = function() {
   origAutosave();
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => { if(currentSession) supabaseGuardar(); }, 2000);
+  saveTimer = setTimeout(() => { supabaseGuardar(); }, 2000);
 }
 
 document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
