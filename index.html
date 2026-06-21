@@ -1041,6 +1041,8 @@ function showToast(msg) {
 
 function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
+const SUPABASE_URL = 'https://rnmttmbqwzyjrvvywhi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJubXR0bWJxd3p5anJ2dnZ5d2hpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5OTY0MTUsImV4cCI6MjA5NzU3MjQxNX0.AVsJiRyctHO_n22NFYat5kuURZw3sTrTxasrkz3L9S4';
 let currentSession = null;
 
 async function doLogin() {
@@ -1086,8 +1088,6 @@ function showApp() {
   load(); updateEq(); calcStack(); supabaseCargar();
 }
 
-const SUPABASE_URL = 'https://rnmttmbqwzyjrvvywhi.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJubXR0bWJxd3p5anJ2dnZ5d2hpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5OTY0MTUsImV4cCI6MjA5NzU3MjQxNX0.AVsJiRyctHO_n22NFYat5kuURZw3sTrTxasrkz3L9S4';
 const OFFER_ID = 1;
 
 async function supabaseGuardar() {
