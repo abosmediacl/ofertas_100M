@@ -1060,27 +1060,27 @@ function showApp() {
 
 const OFFER_ID = 1;
 
+const HEADERS = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'resolution=merge-duplicates,return=minimal'
+};
+
 async function supabaseGuardar() {
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}`, {
-      method: 'GET',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/ofertas`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({ id: OFFER_ID, datos: D })
     });
-    const rows = await res.json();
-    const method = rows.length > 0 ? 'PATCH' : 'POST';
-    const url = rows.length > 0
-      ? `${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}`
-      : `${SUPABASE_URL}/rest/v1/ofertas`;
-    await fetch(url, {
-      method,
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(rows.length > 0 ? { datos: D } : { id: OFFER_ID, datos: D })
-    });
+    if(res.ok || res.status === 409) {
+      await fetch(`${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}`, {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify({ datos: D })
+      });
+    }
     showToast('Guardado en la nube ☁');
   } catch(e) { showToast('Error al guardar en nube'); }
 }
@@ -1088,7 +1088,7 @@ async function supabaseGuardar() {
 async function supabaseCargar() {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/ofertas?id=eq.${OFFER_ID}&select=datos`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      headers: HEADERS
     });
     const rows = await res.json();
     if(rows.length > 0 && rows[0].datos) {
@@ -1103,8 +1103,8 @@ async function supabaseCargar() {
       if(D.stack) D.stack.forEach(s => addStack(s.n, s.t, s.v));
       updateEq(); calcStack();
       showToast('Datos cargados desde la nube ☁');
-    } else { showToast('No hay datos en la nube aún'); }
-  } catch(e) { showToast('Error al cargar desde nube'); }
+    }
+  } catch(e) { console.log('Supabase error:', e); }
 }
 
 let saveTimer;
